@@ -20,19 +20,9 @@ def inputdata():
     age and game console type they own.
     """
     
-    games = csv.DictReader(open("video games project - games.csv"))
-    users = csv.DictReader(open("video games project - users.csv"))
-    ownedgames = csv.DictReader(open("video games project - ownedgames.csv"))
- 
-    for game in games:
-        print(repr(game))
-    
-    for user in users:
-        print(repr(user))
- 
-    for purchase in ownedgames:
-        print(repr(purchase))
-
+    games = list(csv.DictReader(open("video games project - games.csv")))
+    users = list(csv.DictReader(open("video games project - users.csv")))
+    ownedgames = list(csv.DictReader(open("video games project - ownedgames.csv")))
     return games, users, ownedgames
 
 def console_v5():
@@ -59,6 +49,16 @@ def console_v5():
     elif c == 'PlayStation':
         print(f'Gaming console entered is {args.console}')
 
+def get_user_age_from_name(users, name):
+    """
+    From the name we will get an age
+    """
+    byname = {}
+    for d in users:
+        n = d['Name']
+        byname[n] = d
+    user = byname[name]
+    return user['Age']
 
 
 def age_limitcheck(age, ESRB_rat,):
@@ -85,6 +85,15 @@ def age_limitcheck(age, ESRB_rat,):
 def main():
     games, users, ownedgames = inputdata()
     name = input("Please enter your name : ")
+    
+    for game in games:
+        print(repr(game))
+    
+    for user in users:
+        print(repr(user))
+ 
+    for purchase in ownedgames:
+        print(repr(purchase))
     
     #(Scott)
     # from the name we will get an age
