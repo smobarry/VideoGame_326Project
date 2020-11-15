@@ -11,23 +11,31 @@ INST 326
 import csv
 import string
 
-games = csv.reader(open("video games project - games.csv"))
-games_users = csv.reader(open("video games project - users.csv"))
-games_ownedgames = csv.reader(open("video games project - ownedgames.csv"))
+def inputdata():
+    """
+    (Scott) I created three csv files for the past game store data that will
+    be used to tailor game recommendations. This will be ussed to recommend games of the 
+    same genre as the user has bought in the past.
+    Later we will fill filter down games they can actually own due to their
+    age and game console type they own.
+    """
+    games = csv.reader(open("video games project - games.csv"))
+    users = csv.reader(open("video games project - users.csv"))
+    ownedgames = csv.reader(open("video games project - ownedgames.csv"))
  
-for game in games:
-    print(repr(game))
+    for game in games:
+        print(repr(game))
     
-for game in games_users:
-    print(repr(game))
+    for user in users:
+        print(repr(user))
  
-for game in games_ownedgames:
-    print(repr(game))
+    for purchase in ownedgames:
+        print(repr(purchase))
 
-    
+    return games, users, ownedgames
 
 def console_v5():
-    """ Creates an object containing the terminal inputs of the user as attributes of the object
+    """ (Chidima) Creates an object containing the terminal inputs of the user as attributes of the object
     
     Args:
        None
@@ -53,20 +61,25 @@ def console_v5():
 (Germain) This script will be limiting age of potential players
 """
 #this method will ask the user to enter his age 
-def age_limit(age, ESRB_rat,):
+def age_limitcheck(age, ESRB_rat,):
     """
     This function will check for the age limit of the user and approve the game based on 
     the ESRB rating. 
     Args:
         age(int)
         ESRB(str)
-    """   
-    if (age >= 17) and (ESRB_rat == 'M'):
-        print("You can play games You can play games with an ESRB rating of M, T, and E.")
-    elif ( age >= 13 & age < 17  ) and (ERSB_rat == 'T'):
-        print ("You can play games with an ESRB rating of T and E.")
-    elif(age >= 6 & age < 13) and (ESRB_rat == 'E'):
+    """
+    oktobuy = False
+    if (age >= 17) and (ESRB_rat in {'E', 'T', 'M'}):
+        print("You can play games You can play games with an ESRB rating of E,T,M.")
+        oktobuy = True
+    elif ( age >= 13) and (ERSB_rat in {'E', 'T'}):
+        print ("You can play games with an ESRB rating of E, T.")
+        oktobuy = True
+    elif(age >= 6) and (ESRB_rat == 'E'):
         print("You can only play games with an ESRB rating of E.")
+        oktobuy = True
+    return oktobuy
         
 def main():
     print ("please enter your age ")
