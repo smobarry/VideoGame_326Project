@@ -4,18 +4,28 @@ Scott Mobarry
 Chidima Ibezimako
 Salahdin Waji
 Germain Biyao
-Assignment: Final Project Proposal
+Assignment: Final Project Check In 1
 INST 326
 """
 
 import csv
 import string
 
-
 games = csv.reader(open("video games project - games.csv"))
+games_users = csv.reader(open("video games project - users.csv"))
+games_ownedgames = csv.reader(open("video games project - ownedgames.csv"))
+ 
 for game in games:
     print(repr(game))
     
+for game in games_users:
+    print(repr(game))
+ 
+for game in games_ownedgames:
+    print(repr(game))
+
+    
+
 def console_v5():
     """ Creates an object containing the terminal inputs of the user as attributes of the object
     
@@ -45,8 +55,8 @@ def console_v5():
 #this method will ask the user to enter his age 
 def age_limit(age, ESRB_rat,):
     """
-    This function will check for the age limit and give a a game based on 
-    the rating. 
+    This function will check for the age limit of the user and approve the game based on 
+    the ESRB rating. 
     Args:
         age(int)
         ESRB(str)
