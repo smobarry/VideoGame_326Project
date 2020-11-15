@@ -19,9 +19,10 @@ def inputdata():
     Later we will fill filter down games they can actually own due to their
     age and game console type they own.
     """
-    games = csv.reader(open("video games project - games.csv"))
-    users = csv.reader(open("video games project - users.csv"))
-    ownedgames = csv.reader(open("video games project - ownedgames.csv"))
+    
+    games = csv.DictReader(open("video games project - games.csv"))
+    users = csv.DictReader(open("video games project - users.csv"))
+    ownedgames = csv.DictReader(open("video games project - ownedgames.csv"))
  
     for game in games:
         print(repr(game))
@@ -35,7 +36,9 @@ def inputdata():
     return games, users, ownedgames
 
 def console_v5():
-    """ (Chidima) Creates an object containing the terminal inputs of the user as attributes of the object
+    """ 
+    (Chidima)
+    Creates an object containing the terminal inputs of the user as attributes of the object
     
     Args:
        None
@@ -57,12 +60,10 @@ def console_v5():
         print(f'Gaming console entered is {args.console}')
 
 
-"""
-(Germain) This script will be limiting age of potential players
-"""
-#this method will ask the user to enter his age 
+
 def age_limitcheck(age, ESRB_rat,):
     """
+    This script will be limiting age of potential players
     This function will check for the age limit of the user and approve the game based on 
     the ESRB rating. 
     Args:
@@ -82,5 +83,15 @@ def age_limitcheck(age, ESRB_rat,):
     return oktobuy
         
 def main():
-    print ("please enter your age ")
-    age = int(input("Enter age : "))
+    games, users, ownedgames = inputdata()
+    name = input("Please enter your name : ")
+    
+    #(Scott)
+    # from the name we will get an age
+    # from the name we will find a genre bought by this person
+    # from the genre we will find a list of possible games to recommend
+    # from the age of the person we will only keep the games we can recommend 
+    # we will display the recommendation
+
+if __name__ == "__main__":
+    main()    
