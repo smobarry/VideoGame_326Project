@@ -1,6 +1,8 @@
-User,Game
-Alice,Uncharted 2
-John,Madden 20
-Sam ,Halo
-Joseph,Forza Horizon 4
-Vince,Black Ops
+User_id,Game_id
+1,5
+2,7
+3,6
+4,1
+5,3
+1,2
+2,5

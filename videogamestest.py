@@ -49,17 +49,54 @@ def console_v5():
     elif c == 'PlayStation':
         print(f'Gaming console entered is {args.console}')
 
-def get_user_age_from_name(users, name):
+
+def get_userid_from_name(users, name):
     """
-    From the name we will get an age
+    From the name we will get a User id
     """
     byname = {}
     for d in users:
         n = d['Name']
         byname[n] = d
     user = byname[name]
+    return user['id']
+
+
+
+def get_user_age_from_userid(users, userid):
+    """
+    From the user id we will get an age.
+    I created a dictionary to find the right user records.
+    """
+    byid = {}
+    for d in users:
+        n = d['id']
+        byid[n] = d
+    user = byid[userid]
     return user['Age']
 
+def get_games_from_userid(owned, userid):
+    """
+    From the name we will get the games bought by this person
+    """
+    games = []
+    for d in owned:
+        n = d['User_id']
+        if n == userid:
+            games.append(d['Game_id'])
+    return games
+
+def get_genres_from_games(games, their_games):
+    """
+    From the games we will get the genres
+    """
+    genres = set()
+    for d in games:
+        n = d['id']
+        if n in their_games:
+            genres.add(d['Genre'])
+    return genres
+    
 
 def age_limitcheck(age, ESRB_rat,):
     """
@@ -83,8 +120,17 @@ def age_limitcheck(age, ESRB_rat,):
     return oktobuy
         
 def main():
-    games, users, ownedgames = inputdata()
+    games, users, owned_games = inputdata()
     name = input("Please enter your name : ")
+    
+    their_userid = get_userid_from_name(users, name)
+    their_age = get_user_age_from_userid(users, their_userid)
+    their_games = get_games_from_userid(owned_games, their_userid)
+    their_genres = get_genres_from_games(games, their_games)
+    print(repr(their_userid))
+    print(repr(their_age))
+    print(repr(their_games))
+    print(repr(their_genres))
     
     for game in games:
         print(repr(game))
@@ -92,12 +138,12 @@ def main():
     for user in users:
         print(repr(user))
  
-    for purchase in ownedgames:
+    for purchase in owned_games:
         print(repr(purchase))
-    
+
     #(Scott)
-    # from the name we will get an age
-    # from the name we will find a genre bought by this person
+    # from the name we will get an age (done)
+    # from the name we will find a genre bought by this person(done)
     # from the genre we will find a list of possible games to recommend
     # from the age of the person we will only keep the games we can recommend 
     # we will display the recommendation
