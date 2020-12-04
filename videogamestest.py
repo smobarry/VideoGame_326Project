@@ -10,20 +10,36 @@ INST 326
 
 import csv
 import string
+import random
+import pandas as pd
 
 def inputdata():
     """
     (Scott) I created three csv files for the past game store data that will
-    be used to tailor game recommendations. This will be ussed to recommend games of the 
+    be used to tailor game recommendations. This will be used to recommend games of the 
     same genre as the user has bought in the past.
     Later we will fill filter down games they can actually own due to their
     age and game console type they own.
     """
+    gametest = pd.read_csv("video games project - games.csv")
+    gametest.set_index('id', inplace=True) 
+    print(gametest)
     
     games = list(csv.DictReader(open("video games project - games.csv")))
+    #print(games)
+    
+    df_users = pd.read_csv("video games project - users.csv")
+    df_users.set_index('id', inplace=True) 
+    print(df_users)
+    
     users = list(csv.DictReader(open("video games project - users.csv")))
+    #print(users)
+    
+    ownedgamestest = pd.read_csv("video games project - ownedgames.csv")
+    print(ownedgamestest)
+    
     ownedgames = list(csv.DictReader(open("video games project - ownedgames.csv")))
-    return games, users, ownedgames
+    return games, users, ownedgames, df_users
 
 def console_v5():
     """ 
@@ -61,6 +77,12 @@ def get_userid_from_name(users, name):
     user = byname[name]
     return user['id']
 
+def get_userid_from_name_df(userstest, name):
+    """
+    From the name we will get a User id
+    """
+    return userstest[userstest.Name == name]
+
 
 
 def get_user_age_from_userid(users, userid):
@@ -88,7 +110,7 @@ def get_games_from_userid(owned, userid):
 
 def get_genres_from_games(games, their_games):
     """
-    From the games we will get the genres
+    From the games we will get the same genres
     """
     genres = set()
     for d in games:
@@ -118,16 +140,20 @@ def age_limitcheck(age, ESRB_rat,):
         print("You can only play games with an ESRB rating of E.")
         oktobuy = True
     return oktobuy
-        
+
 def main():
-    games, users, owned_games = inputdata()
+    games, users, owned_games, df_users = inputdata()
     name = input("Please enter your name : ")
     
     their_userid = get_userid_from_name(users, name)
     their_age = get_user_age_from_userid(users, their_userid)
+    df_userid = get_userid_from_name_df(df_users, name)
+    
+ 
     their_games = get_games_from_userid(owned_games, their_userid)
     their_genres = get_genres_from_games(games, their_games)
     print(repr(their_userid))
+    print(df_userid)
     print(repr(their_age))
     print(repr(their_games))
     print(repr(their_genres))
@@ -147,6 +173,14 @@ def main():
     # from the genre we will find a list of possible games to recommend
     # from the age of the person we will only keep the games we can recommend 
     # we will display the recommendation
+#UTA max
+
+#df = pandas.DataFrame(holder)
+#Exported to a csv for later use
+#df.to_csv('shoe_dict_exported.csv', index = False )
+
+
+
 
 if __name__ == "__main__":
     main()    

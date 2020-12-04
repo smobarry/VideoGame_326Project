@@ -1,12 +1,12 @@
 id,Title,Genre,Rating,MinimumAge,Xbox,Playstation
 1,Forza Horizon 4,Racing,E,6,Y,Y
 2,Tomb Raider,Adventure,M,17,Y,Y
-3,Black Ops,First-person Shooter,M,17,Y,Y
+3,Black Ops,Shooter,M,17,Y,Y
 4,FIFA 20,Sports,E,6,Y,Y
 5,Uncharted 2,Adventure,T,13,N,Y
-6,Halo,First-person Shooter,M,17,Y,N
+6,Halo,Shooter,M,17,Y,N
 7,Madden 20,Sports,E,6,Y,Y
-8,Battlefield 5,First-person Shooter,M,17,Y,Y
+8,Battlefield 5,Shooter,M,17,Y,Y
 9,NBA 2k 20,Sports,E,6,Y,Y
 10,Gran Turismo Sport,Racing,E,6,N,Y
 11,Far Cry 4,Adventure,M,17,Y,Y
