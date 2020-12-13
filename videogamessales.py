@@ -22,15 +22,20 @@ RP         3
 AO         1
 """
 
-def make_games_clean():
+def make_games_clean(fname):
     """
     Creates a dataframe with games data.
-    We downloaded the csv file from Kaggle and checked it into GitHub in the same directory as this script.  
+    We downloaded the csv file from Kaggle and checked it into GitHub in the same directory as this script.
+    The input csv file needs at least columns: ['Name', 'Platform', 'Genre', 'Rating']
+    
+    input: file name of csv file
+    output: Pandas dataframe with games data
     """
-    fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
+
     df = pd.read_csv(fname)
     #print(f'df.head() = {df.head(10)}')
-    #print(df_games_all.describe())
+    #print(df.describe())
+    #print(df.info())
     df = df[['Name', 'Platform', 'Genre', 'Rating']]
     # We kept only the columns that we wanted. Indexing using a list means the list of four columns to keep from the 16 original columns.
     #print(f'df.head() = {df.head(10)}')
@@ -61,6 +66,7 @@ def suggest_games(
     print(f'avail_ratings = {avail_ratings}')
 
     my_ratings = [ rating for rating in esrb_min_age if esrb_min_age[rating] <= my_age]
+    # These are the ratings that I can buy for my age.
     # print(f'my_titles = {my_titles}')
     print(f'my_ratings = {my_ratings}')
     # print(f'my_platforms = {my_platforms}')
@@ -74,7 +80,6 @@ def suggest_games(
     #found_titles = df_found_games['Name'].value_counts()
     found_platforms = df_found_games['Platform'].value_counts()
     found_genres = df_found_games['Genre'].value_counts()
-    print(type(found_genres.index))
     found_ratings = df_found_games['Rating'].value_counts()
     # print(f'found_titles = {found_titles}')
     print(f'found_platforms = {found_platforms}')
@@ -102,7 +107,8 @@ def suggest_games(
 
 if __name__ == '__main__':
 
-    df = make_games_clean()
+    fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
+    df = make_games_clean(fname)
 
     my_titles=['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']
     my_platforms = ['XB', 'PS']
