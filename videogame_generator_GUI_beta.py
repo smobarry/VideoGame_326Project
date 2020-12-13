@@ -15,10 +15,10 @@ class game_Generator:
         self.root.title("Videogame Suggestion Generator")
         self.root.geometry("800x400")
         self.v = tk.IntVar()
-        self.consoles =[]#this needs to be populated first
-        self.titles = []#this needs to be populated first
-        #self.consoles =['XB', 'PS']#for testing purposes
-        #self.titles=  ['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']#for testing purposes
+        #self.consoles =[]#this needs to be populated first
+        #self.titles = []#this needs to be populated first
+        self.consoles =['XB', 'PS']#for testing purposes
+        self.titles=  ['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']#for testing purposes
       
         #self.games=["GTA, Super Mario"]#list is only here for testing purposes. will be removed/updated later
         #self.root.mainloop()
