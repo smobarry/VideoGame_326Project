@@ -3,8 +3,8 @@
 # INST 326
 
 # We download a pre-scraped csv file from https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
-
-
+# Documentation for how to use pandas start at https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf 
+# For more documentation use this website https://pandas.pydata.org/docs/reference/frame.html
 
 import pandas as pd
 
@@ -30,6 +30,7 @@ def make_games_clean(fname):
     
     input: file name of csv file
     output: Pandas dataframe with games data
+    (Written by Scott Mobarry)
     """
 
     df = pd.read_csv(fname)
@@ -55,7 +56,10 @@ def suggest_games(
     my_age,
     num_suggestions,
     ):
-
+    """
+    (Written by Scott Mobarry)
+    """
+    # the value counts method is like GroupBy but simpler. It groupby's the columns giving the counts.
     #avail_titles = df['Name'].value_counts()
     avail_platforms = df['Platform'].value_counts()
     avail_genres = df['Genre'].value_counts()
@@ -70,9 +74,9 @@ def suggest_games(
     # print(f'my_titles = {my_titles}')
     print(f'my_ratings = {my_ratings}')
     # print(f'my_platforms = {my_platforms}')
-    # print(f'head of df_games = {df_games_set.head()}')
-    # print(f'describe Ratings = {df_games_set.Rating.describe()}')
-    # print(f'value_counts = {df_games_set.Rating.value_counts()}')
+    # print(f'head of df_games = {df.head()}')
+    # print(f'describe Ratings = {df['Rating'].describe()}')
+    # print(f'value_counts = {df['Rating'].value_counts()}')
 
     df_found_games = df[df['Name'].isin(my_titles)]
     # print(f'df_found_games = {df_found_games}')
@@ -92,8 +96,14 @@ def suggest_games(
         & df['Platform'].isin(my_platforms)
         & df['Rating'].isin(my_ratings)
         ]
+    # Filter rows by:
+    #   (1) don't keep the titles the user already has
+    #   (2) only keep genres the user already has
+    #   (3) only keep platforms the user already has
+    #   (4) only keep the ratings the user can buy
     #print(f'df_suggest.count() = {df_suggest.count()}')
-    df_suggestions = df_suggest.head(num_suggestions)
+    #df_suggestions = df_suggest.head(num_suggestions)
+    df_suggestions = df_suggest.sample(n = num_suggestions)
     suggestions = df_suggestions['Name'].tolist()
 
     print(f'df_suggest = {df_suggest}')
