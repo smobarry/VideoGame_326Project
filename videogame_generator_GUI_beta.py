@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import csv
+import pandas
 
 class game_Generator:
     
@@ -71,8 +72,7 @@ class game_Generator:
         
     def game_owned(self):
         self.gameType_var = tk.StringVar()
-        self.lbl_game = tk.Label(self.root, text = "Enter the genre of interest " + 
-                            "or name of game that you own").grid(row=7, column=0)
+        self.lbl_game = tk.Label(self.root, text = "Enter the games that you own ").grid(row=7, column=0)
         self.entry_gameType = tk.Entry(self.root, textvariable= self.gameType_var, bd =5).grid(row=8,column=0)
         pass
     
