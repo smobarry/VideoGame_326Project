@@ -102,7 +102,7 @@ def suggest_games(
 
 if __name__ == '__main__':
 
-    df_games_set = make_games_clean()
+    df = make_games_clean()
 
     my_titles=['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']
     my_platforms = ['XB', 'PS']
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     num_suggestions = 10
 
     suggestions = suggest_games(
-        df_games_set,
+        df,
         my_titles,
         my_platforms,
         my_age,
