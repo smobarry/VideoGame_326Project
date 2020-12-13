@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import csv
+import pandas
 
 class game_Generator:
     
