@@ -24,10 +24,10 @@ AO         1
 
 def make_games_clean(fname):
     """
-    Creates a dataframe with games data.
-    We downloaded the csv file from Kaggle and checked it into GitHub in the same directory as this script.
-    The input csv file needs at least columns: ['Name', 'Platform', 'Genre', 'Rating']
-    
+    The method make_games_clean(fname) creates a dataframe from games data on a csv file.
+    We downloaded the video games sales csv file from Kaggle and checked it into GitHub in the same directory as this script.
+    The input csv file needs at least these 4 columns: ['Name', 'Platform', 'Genre', 'Rating']
+    The inputs and outputs are stated below:
     input: file name of csv file
     output: Pandas dataframe with games data
     (Written by Scott Mobarry)
@@ -41,9 +41,10 @@ def make_games_clean(fname):
     # We kept only the columns that we wanted. Indexing using a list means the list of four columns to keep from the 16 original columns.
     #print(f'df.head() = {df.head(10)}')
     rows_to_keep = df['Rating'].notna()
-    # print(f'rows_to_keep = {rows_to_keep}')
+    #print(f'rows_to_keep = {rows_to_keep}')
     df = df[rows_to_keep]
-    # We just removed all rows with NaN as the rating. The remaining rows all have ratings.
+    #print(df.info())
+    # I just removed all rows with NaN as the rating. The remaining rows all have ratings.
     #print(f'df.head() = {df.head(10)}')
     #print(f'df.tail() = {df.tail(10)}')
     return df
@@ -57,6 +58,18 @@ def suggest_games(
     num_suggestions,
     ):
     """
+    The method suggest_games() implements a video game suggestor that returns reccomendations to the user based off of the established criteria.
+    The inputs and outputs for this method are stated below:
+    
+    inputs:
+    The pandas dataframe of known games(df), 
+    the list of strings containing titles that the user owns and has played and liked,
+    the gaming console platform the user wants a game for,
+    the age of the intended user,
+    the amount of video game suggestions the user would like.
+    
+    outputs:
+    A list of game titles suggested to the user. 
     (Written by Scott Mobarry)
     """
     # the value counts method is like GroupBy but simpler. It groupby's the columns giving the counts.
@@ -64,31 +77,32 @@ def suggest_games(
     avail_platforms = df['Platform'].value_counts()
     avail_genres = df['Genre'].value_counts()
     avail_ratings = df['Rating'].value_counts()
-    # print(f'avail_titles = {avail_titles}')
-    print(f'avail_platforms = {avail_platforms}')
-    print(f'avail_genres = {avail_genres}')
-    print(f'avail_ratings = {avail_ratings}')
+    #print(f'avail_titles = \n{avail_titles}')
+    print(f'avail_platforms = \n{avail_platforms}')
+    print(f'avail_genres = \n{avail_genres}')
+    print(f'avail_ratings = \n{avail_ratings}')
 
     my_ratings = [ rating for rating in esrb_min_age if esrb_min_age[rating] <= my_age]
-    # These are the ratings that I can buy for my age.
-    # print(f'my_titles = {my_titles}')
+    # These are the ratings that the user can buy for their age.
+    #print(f'my_titles = {my_titles}')
     print(f'my_ratings = {my_ratings}')
-    # print(f'my_platforms = {my_platforms}')
-    # print(f'head of df_games = {df.head()}')
-    # print(f'describe Ratings = {df['Rating'].describe()}')
-    # print(f'value_counts = {df['Rating'].value_counts()}')
+    #print(f'my_platforms = {my_platforms}')
+    #print(f'head of df_games = {df.head()}')
+    #print(f'describe Ratings = {df['Rating'].describe()}')
+    #print(f'value_counts = {df['Rating'].value_counts()}')
 
     df_found_games = df[df['Name'].isin(my_titles)]
-    # print(f'df_found_games = {df_found_games}')
+    # games found in the database from the titles that were given from the user.
+    #print(f'df_found_games = {df_found_games}')
 
-    #found_titles = df_found_games['Name'].value_counts()
+    found_titles = df_found_games['Name'].value_counts()
     found_platforms = df_found_games['Platform'].value_counts()
     found_genres = df_found_games['Genre'].value_counts()
     found_ratings = df_found_games['Rating'].value_counts()
-    # print(f'found_titles = {found_titles}')
-    print(f'found_platforms = {found_platforms}')
-    print(f'found_genres = {found_genres}')
-    print(f'found_ratings = {found_ratings}')
+    #print(f'found_titles = {found_titles}')
+    #print(f'found_platforms = {found_platforms}')
+    #print(f'found_genres = {found_genres}')
+    #print(f'found_ratings = {found_ratings}')
 
     df_suggest = df[
         (~ df['Name'].isin(my_titles))
@@ -96,19 +110,21 @@ def suggest_games(
         & df['Platform'].isin(my_platforms)
         & df['Rating'].isin(my_ratings)
         ]
-    # Filter rows by:
-    #   (1) don't keep the titles the user already has
-    #   (2) only keep genres the user already has
-    #   (3) only keep platforms the user already has
-    #   (4) only keep the ratings the user can buy
-    #print(f'df_suggest.count() = {df_suggest.count()}')
+    # The video game suggestor will filter rows by this criteria:
+    #   (1) don't keep the titles the user already has in their collection
+    #   (2) only keep genres the user already has in their collection
+    #   (3) only keep platforms the user already has in their collection
+    #   (4) only keep the ratings the user can buy due to their age restrictions
+    print(f'df_suggest.count() = {df_suggest.count()}')
+    print(f'df_suggest = \n{df_suggest}')
     #df_suggestions = df_suggest.head(num_suggestions)
     df_suggestions = df_suggest.sample(n = num_suggestions)
+    # The next statement extracts a python list of suggested titles
     suggestions = df_suggestions['Name'].tolist()
 
-    print(f'df_suggest = {df_suggest}')
+    # print(f'df_suggest = {df_suggest}')
     # print(f'df_suggest = {df_suggest.set_index("Name")}')
-    print(f'df_suggestions = {df_suggestions.set_index("Name")}')
+    # print(f'df_suggestions = {df_suggestions.set_index("Name")}')
     # print(f'type(df_suggest) = {type(df_suggest)}')
     # print(f'type(df_suggest["Name"]) = {type(df_suggest["Name"])}')
     # df_suggest.set_index('Name', inplace=True)
