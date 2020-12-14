@@ -5,3 +5,5 @@ Code for INST 326 Final Project
 * Chidima Ibezimako
 * Salahdin Waji
 * Germain Biyao
+
+download and install pandas, tkinter
