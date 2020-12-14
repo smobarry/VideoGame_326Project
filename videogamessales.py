@@ -2,7 +2,7 @@
 # Directory ID: smobarry
 # INST 326
 
-# We download a pre-scraped csv file from https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
+# We downloaded a pre-scraped csv file from https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
 # Documentation for how to use pandas start at https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf 
 # For more documentation use this website https://pandas.pydata.org/docs/reference/frame.html
 
@@ -95,16 +95,16 @@ def suggest_games(
     # games found in the database from the titles that were given from the user.
     #print(f'df_found_games = {df_found_games}')
 
-    found_titles = df_found_games['Name'].value_counts()
-    found_platforms = df_found_games['Platform'].value_counts()
+    #found_titles = df_found_games['Name'].value_counts()
+    #found_platforms = df_found_games['Platform'].value_counts()
     found_genres = df_found_games['Genre'].value_counts()
-    found_ratings = df_found_games['Rating'].value_counts()
+    #found_ratings = df_found_games['Rating'].value_counts()
     #print(f'found_titles = {found_titles}')
     #print(f'found_platforms = {found_platforms}')
     #print(f'found_genres = {found_genres}')
     #print(f'found_ratings = {found_ratings}')
 
-    df_suggest = df[
+    df_can_suggest = df[
         (~ df['Name'].isin(my_titles))
         & df['Genre'].isin(found_genres.index.tolist())
         & df['Platform'].isin(my_platforms)
@@ -115,19 +115,19 @@ def suggest_games(
     #   (2) only keep genres the user already has in their collection
     #   (3) only keep platforms the user already has in their collection
     #   (4) only keep the ratings the user can buy due to their age restrictions
-    print(f'df_suggest.count() = {df_suggest.count()}')
-    print(f'df_suggest = \n{df_suggest}')
-    #df_suggestions = df_suggest.head(num_suggestions)
-    df_suggestions = df_suggest.sample(n = num_suggestions)
+    print(f'df_can_suggest.count() = {df_can_suggest.count()}')
+    print(f'df_can_suggest = \n{df_can_suggest}')
+    #df_suggestions = df_can_suggest.head(num_suggestions)
+    df_suggestions = df_can_suggest.sample(n = num_suggestions)
     # The next statement extracts a python list of suggested titles
     suggestions = df_suggestions['Name'].tolist()
 
-    # print(f'df_suggest = {df_suggest}')
-    # print(f'df_suggest = {df_suggest.set_index("Name")}')
+    # print(f'df_can_suggest = {df_can_suggest}')
+    # print(f'df_can_suggest = {df_can_suggest.set_index("Name")}')
     # print(f'df_suggestions = {df_suggestions.set_index("Name")}')
-    # print(f'type(df_suggest) = {type(df_suggest)}')
-    # print(f'type(df_suggest["Name"]) = {type(df_suggest["Name"])}')
-    # df_suggest.set_index('Name', inplace=True)
+    # print(f'type(df_can_suggest) = {type(df_can_suggest)}')
+    # print(f'type(df_can_suggest["Name"]) = {type(df_can_suggest["Name"])}')
+    # df_can_suggest.set_index('Name', inplace=True)
     return suggestions
 
 
