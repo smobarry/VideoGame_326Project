@@ -69,7 +69,7 @@ class game_Generator:
         self.gc = StringVar()
         self.gc.set(OPTIONS[0]) # default value
 
-        w = OptionMenu(self.root, self.gc,*OPTIONS, selec).grid(row=1, column=1)
+        w = OptionMenu(self.root, self.gc,*OPTIONS).grid(row=1, column=1)
         
 
         #self.root.mainloop()
