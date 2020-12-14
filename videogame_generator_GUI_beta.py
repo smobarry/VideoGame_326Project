@@ -4,6 +4,7 @@ import sys
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 import csv
 import pandas
 import videogamessales
@@ -19,6 +20,9 @@ class game_Generator:
         #self.titles = []#this needs to be populated first
         self.consoles =['XB', 'PS']#for testing purposes
         self.titles=  ['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']#for testing purposes
+        self.fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
+        self.df = videogamessales.make_games_clean(self.fname)
+        self.gameList=['']
       
         #self.games=["GTA, Super Mario"]#list is only here for testing purposes. will be removed/updated later
         #self.root.mainloop()
@@ -65,22 +69,24 @@ class game_Generator:
         self.gc = StringVar()
         self.gc.set(OPTIONS[0]) # default value
 
-        w = OptionMenu(self.root, self.gc,*OPTIONS).grid(row=1, column=1)
+        w = OptionMenu(self.root, self.gc,*OPTIONS, selec).grid(row=1, column=1)
         
 
         #self.root.mainloop()
     
     def list_of_games(self):
-        #self.games=["GTA, Super Mario"]
-        pass
+        with open("Video_Games_Sales_as_at_22_Dec_2016.csv") as gameFile:
+            self.csv_reader = csv.DictReader(gameFile, delimiter=',')
+            for lines in self.csv_reader:
+                self.gameList.append(lines['Name'])
+        return self.gameList
         
     def user_age(self):
         self.age_var = tk.IntVar()
         #self.age_var.set(6)
         
         self.lbl_age = tk.Label(self.root, text="Enter your age").grid(row=2, column=0)
-        #lbl_age.grid(row=0, column = 3).pack( side = LEFT)
-        #lbl_age.pack(side = LEFT)
+        
         self.entry_age = tk.Entry(self.root, textvariable = self.age_var, bd =5).grid(row=2, column=1, padx=1)
         #entry_age.pack(side = RIGHT)
         #Notes: Cannot use grid and pack in same root/window
@@ -91,14 +97,16 @@ class game_Generator:
         
         
     def game_owned(self):
+       
+        
         self.gameType_var = tk.StringVar()
         self.lbl_game = tk.Label(self.root, text = "Owned games: ").grid(row=3, column=0,padx=5, pady=5)
         
-        self.entry_gameType = tk.Entry(self.root, textvariable= self.gameType_var, bd =5).grid(row=3,column=1, padx=5, pady=5)
+        
+        self.combo_games = ttk.Combobox(self.root, values=self.gameList).grid(row=3,column=1, padx=1, pady=1)
         
         
-        pass
-    
+        #self.entry_gameType = tk.Entry(self.root, textvariable= self.gameType_var, bd =5)
     def gen_lbl(self):
         self.recommend = tk.StringVar()
         self.recommend.set("Recommendations will be displayed here")
@@ -127,6 +135,12 @@ class game_Generator:
         self.consoles.append(self.game_console)
         #self.recommend.set(self.consoles)
         
+    def gen_lbl(self):
+        self.recommend = tk.StringVar()
+        self.recommend.set("Recommendations will be displayed here")
+        
+        label_gen = Label(self.root, textvariable= self.recommend).grid(row=10, column= 1, padx=5, pady=5)
+        
     
     def btn_add_titles(self):
         btn_gen = tk.Button(self.root, text = "Add Games", command = self.add_titles).grid(row=3, column=2, padx=5, pady=5)
@@ -138,15 +152,16 @@ class game_Generator:
     
     def generate(self):
         self.record_entries()#just pre-loads entries inputed by user
-        fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
-        df = videogamessales.make_games_clean(fname)
+        
+        
         #try:
         # if self.name_var != "Name":
         #     if self.age_var.get() > 4:
         #         messagebox.showinfo("Age", "Age is {}".format(self.age_input)) #just to test code. not final edit
         #     pass
         # messagebox.showinfo("Name", "Name is {}".format(self.name_input)) #not final edit
-        self.recommend.set("We recommend the following games for you {}".format(self.name_input) + videogamessales.suggest_games(df,self.titles, self.consoles, self.age_input,3))#for list or csv file with game recmmendatins
+        self.recommend.set(videogamessales.suggest_games(df,self.titles, self.consoles, self.age_input,3))#for list or csv file with game recmmendatins
+        #"We recommend the following games for you {}".format(self.name_input) 
         
         
         
@@ -164,6 +179,7 @@ class game_Generator:
     
 def main():
     gen = game_Generator()
+    gen.list_of_games()
     gen.user_name()
     gen.console()
     gen.user_age()
