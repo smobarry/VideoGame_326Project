@@ -17,7 +17,7 @@ In the Video Game Suggester module (videogamessales.py), we use video game sales
 
 ## Make a clean dataset
 
-The csv file ('Video_Games_Sales_as_at_22_Dec_2016.csv') was loaded into a Pandas DataFrame. There are sixteen columns in the dataset in which we only used four of the columns for this project. 
+The csv file ('Video_Games_Sales_as_at_22_Dec_2016.csv') was loaded into a Pandas DataFrame using the `make_games_clean` method. There are sixteen columns in the dataset in which we only used four of the columns for this project. It returns the smaller cleaned dataframe.
 
 ## More Like This
 
