@@ -12,7 +12,19 @@ Download and install pandas, tkinter
 # Suggester
 In the Video Game Suggester Program (videogamessales.py), we use video game sales data to provide a suggestion for video games that a user might want to buy. We start with data collected from the user that could be indicitive or restraining of what games they might want to use next. In addition we load a datafile of many video games and their associated platform, genre, and rating. This datafile is a csv file from Kaggle intended for machine learning experimentation. The user data is collected via our GUI and will be discussed in a subsequent section.
 
-The csv file ('Video_Games_Sales_as_at_22_Dec_2016.csv') was loaded into a Pandas DataFrame. There are 16 columns in the dataset in which we only used 4 of the colums for this project. 3 of the columns were used to restrict the data. In particular we asked the user for   
+The csv file ('Video_Games_Sales_as_at_22_Dec_2016.csv') was loaded into a Pandas DataFrame. There are sixteen columns in the dataset in which we only used four of the columns for this project. 
+
+The titles of the games are used to find genres that are available in the database that the user would like. So we want to suggest games in these genres. Note we did not ask the user about genres because each database has a different set of genre names.
+Also we cannot suggest games that the user cannot use. Two of the DataFrame columns were used to restrict the data. In particular we asked the user for their prefered platform, and their age. The age was used to compute which ESRB ratings were allowed to be suggested to the user. Our algorithm takes the Pandas DataFrame and filters down to those games that meet these requirements. 
+
+The video game suggestor will filter rows by this criteria:
+ 
+     1. Don't keep the titles the user already has in their collection
+     2. Only keep genres the user already has in their collection
+     3. Only keep platforms the user already has in their collection
+     4. Only keep the ratings the user can buy due to their age restrictions
+
+At this point we have a subset of games in the dataset that could be suggested. Currently the program random samples a specified number of titles. 
 
 # GUI
 
