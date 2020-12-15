@@ -15,6 +15,8 @@ Download https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings and ins
 
 In the Video Game Suggester Program (videogamessales.py), we use video game sales data to provide a suggestion for video games that a user might want to buy. We start with data collected from the user that could be indicitive or restraining of what games they might want to use next. In addition we load a datafile of many video games and their associated platform, genre, and rating. This datafile is a csv file from Kaggle intended for machine learning experimentation. The user data is collected via our GUI and will be discussed in a subsequent section.
 
+## Make a clean dataset
+
 The csv file ('Video_Games_Sales_as_at_22_Dec_2016.csv') was loaded into a Pandas DataFrame. There are sixteen columns in the dataset in which we only used four of the columns for this project. 
 
 ## More Like This
