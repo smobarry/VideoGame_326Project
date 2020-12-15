@@ -24,7 +24,7 @@ AO         1
 
 def make_games_clean(fname):
     """
-    The method make_games_clean(fname) creates a dataframe from games data on a csv file.
+    The method make_games_clean(fname) creates a dataframe from video games data in the csv file.
     We downloaded the video games sales csv file from Kaggle and checked it into GitHub in the same directory as this script.
     The input csv file needs at least these 4 columns: ['Name', 'Platform', 'Genre', 'Rating']
     The inputs and outputs are stated below:
@@ -74,36 +74,36 @@ def suggest_games(
     """
     # the value counts method is like GroupBy but simpler. It groupby's the columns giving the counts.
     #avail_titles = df['Name'].value_counts()
-    avail_platforms = df['Platform'].value_counts()
-    avail_genres = df['Genre'].value_counts()
-    avail_ratings = df['Rating'].value_counts()
+    #avail_platforms = df['Platform'].value_counts()
+    #avail_genres = df['Genre'].value_counts()
+    #avail_ratings = df['Rating'].value_counts()
     #print(f'avail_titles = \n{avail_titles}')
-    print(f'avail_platforms = \n{avail_platforms}')
-    print(f'avail_genres = \n{avail_genres}')
-    print(f'avail_ratings = \n{avail_ratings}')
+    #print(f'avail_platforms = \n{avail_platforms}')
+    #print(f'avail_genres = \n{avail_genres}')
+    #print(f'avail_ratings = \n{avail_ratings}')
 
     my_ratings = [ rating for rating in esrb_min_age if esrb_min_age[rating] <= my_age]
     # These are the ratings that the user can buy for their age.
-    #print(f'my_titles = {my_titles}')
-    print(f'my_ratings = {my_ratings}')
-    #print(f'my_platforms = {my_platforms}')
+    #print(f'my_ratings = {my_ratings}')
     #print(f'head of df_games = {df.head()}')
     #print(f'describe Ratings = {df['Rating'].describe()}')
     #print(f'value_counts = {df['Rating'].value_counts()}')
 
+    ## More Like This
     df_found_games = df[df['Name'].isin(my_titles)]
     # games found in the database from the titles that were given from the user.
     #print(f'df_found_games = {df_found_games}')
-
     #found_titles = df_found_games['Name'].value_counts()
     #found_platforms = df_found_games['Platform'].value_counts()
     found_genres = df_found_games['Genre'].value_counts()
+    #found the genres in the dataset of games the user liked.
     #found_ratings = df_found_games['Rating'].value_counts()
     #print(f'found_titles = {found_titles}')
     #print(f'found_platforms = {found_platforms}')
     #print(f'found_genres = {found_genres}')
     #print(f'found_ratings = {found_ratings}')
 
+    ## FILTER
     df_can_suggest = df[
         (~ df['Name'].isin(my_titles))
         & df['Genre'].isin(found_genres.index.tolist())
@@ -111,12 +111,15 @@ def suggest_games(
         & df['Rating'].isin(my_ratings)
         ]
     # The video game suggestor will filter rows by this criteria:
-    #   (1) don't keep the titles the user already has in their collection
-    #   (2) only keep genres the user already has in their collection
-    #   (3) only keep platforms the user already has in their collection
-    #   (4) only keep the ratings the user can buy due to their age restrictions
-    print(f'df_can_suggest.count() = {df_can_suggest.count()}')
-    print(f'df_can_suggest = \n{df_can_suggest}')
+    # 1. Only keep genres of games the user likes
+    # 2. Only keep platforms the user wants
+    # 3. Only keep the ratings the user can buy due to their age restrictions
+    # 4. Don't keep the titles the user gave they already like
+
+
+    ## Sampling
+    # print(f'df_can_suggest.count() = {df_can_suggest.count()}')
+    # print(f'df_can_suggest = \n{df_can_suggest}')
     #df_suggestions = df_can_suggest.head(num_suggestions)
     df_suggestions = df_can_suggest.sample(n = num_suggestions)
     # The next statement extracts a python list of suggested titles
