@@ -10,6 +10,7 @@ import pandas as pd
 
 # To get the minimum age for each ESRB rating use this website https://en.wikipedia.org/wiki/Entertainment_Software_Rating_Board
 esrb_min_age = {'E': 4, 'T': 13, 'M': 17, 'E10+': 10, 'EC': 2, 'K-A': 6, 'RP': 18, 'A0': 18}
+# This is a pandas dictionary of minimum ages for each rating in the dataset
 
 """
 E       3991
@@ -24,12 +25,13 @@ AO         1
 
 def make_games_clean(fname):
     """
-    The method make_games_clean(fname) creates a dataframe from video games data in the csv file.
+    The method make_games_clean(fname) creates a dataframe from the cleaned video games data in the csv file. 
+    This throws away data we can't use.
     We downloaded the video games sales csv file from Kaggle and checked it into GitHub in the same directory as this script.
     The input csv file needs at least these 4 columns: ['Name', 'Platform', 'Genre', 'Rating']
     The inputs and outputs are stated below:
     input: file name of csv file
-    output: Pandas dataframe with games data
+    output: Pandas dataframe with the cleaned video games data
     (Written by Scott Mobarry)
     """
 
@@ -103,7 +105,7 @@ def suggest_games(
     #print(f'found_genres = {found_genres}')
     #print(f'found_ratings = {found_ratings}')
 
-    ## FILTER
+    ## FILTERING
     df_can_suggest = df[
         (~ df['Name'].isin(my_titles))
         & df['Genre'].isin(found_genres.index.tolist())
@@ -118,24 +120,19 @@ def suggest_games(
 
 
     ## Sampling
+    # of the games that survived the filtering we now choose a few to suggest
     # print(f'df_can_suggest.count() = {df_can_suggest.count()}')
-    # print(f'df_can_suggest = \n{df_can_suggest}')
+    print(f'df_can_suggest = \n{df_can_suggest}')
     #df_suggestions = df_can_suggest.head(num_suggestions)
     df_suggestions = df_can_suggest.sample(n = num_suggestions)
     # The next statement extracts a python list of suggested titles
     suggestions = df_suggestions['Name'].tolist()
-
-    # print(f'df_can_suggest = {df_can_suggest}')
-    # print(f'df_can_suggest = {df_can_suggest.set_index("Name")}')
-    # print(f'df_suggestions = {df_suggestions.set_index("Name")}')
-    # print(f'type(df_can_suggest) = {type(df_can_suggest)}')
-    # print(f'type(df_can_suggest["Name"]) = {type(df_can_suggest["Name"])}')
-    # df_can_suggest.set_index('Name', inplace=True)
+    #converts the suggestions into a python list of titles for the GUI
     return suggestions
 
 
 if __name__ == '__main__':
-
+    #this is an example useage via the command line
     fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
     df = make_games_clean(fname)
 
