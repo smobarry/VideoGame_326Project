@@ -1,22 +1,24 @@
-# Scott Mobarry
-# Directory ID: smobarry
-# INST 326
+"""
+Scott Mobarry
+Directory ID: smobarry
+INST 326
 
-# We downloaded a pre-scraped csv file from 
-# https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
+We downloaded a pre-scraped csv file from
+https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
 
-# Documentation for how to use pandas start at
-# https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
+Documentation for how to use pandas start at
+https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
 
-# For more documentation use this website
-# https://pandas.pydata.org/docs/reference/frame.html
+For more documentation use this website
+https://pandas.pydata.org/docs/reference/frame.html
+"""
 
 import pandas as pd
 
 # To get the minimum age for each ESRB rating use this website
 # https://en.wikipedia.org/wiki/Entertainment_Software_Rating_Board
 
-esrb_min_age = {'E': 4, 'T': 13, 'M': 17, 'E10+': 10, 'EC': 2, 'K-A': 6, 'RP': 18, 'A0': 18}
+ESRB_MIN_AGE = {'E': 4, 'T': 13, 'M': 17, 'E10+': 10, 'EC': 2, 'K-A': 6, 'RP': 18, 'A0': 18}
 # This is a pandas dictionary of minimum ages for each rating in the dataset
 
 """
@@ -32,9 +34,10 @@ AO         1
 
 def make_games_clean(fname):
     """
-    The method make_games_clean(fname) creates a dataframe from the cleaned video games data in the csv file. 
+    The method make_games_clean(fname) creates a dataframe from the cleaned video games data file.
     This throws away data we can't use.
-    We downloaded the video games sales csv file from Kaggle and checked it into GitHub in the same directory as this script.
+    We downloaded the video games sales csv file from Kaggle
+    and checked it into GitHub in the same directory as this script.
     The input csv file needs at least these 4 columns: ['Name', 'Platform', 'Genre', 'Rating']
     The inputs and outputs are stated below:
     input: file name of csv file
@@ -68,21 +71,22 @@ def suggest_games(
     num_suggestions,
     ):
     """
-    The method suggest_games() implements a video game suggestor that returns reccomendations to the user based off of the established criteria.
+    The method suggest_games() implements a video game suggestor that returns reccomendations
+    to the user based off of the established criteria.
     The inputs and outputs for this method are stated below:
-    
+
     inputs:
-    The pandas dataframe of known games(mydf), 
+    The pandas dataframe of known games(mydf),
     the list of strings containing titles that the user owns and has played and liked,
     the gaming console platform the user wants a game for,
     the age of the intended user,
     the amount of video game suggestions the user would like.
-    
+
     outputs:
-    A list of game titles suggested to the user. 
+    A list of game titles suggested to the user.
     (Written by Scott Mobarry)
     """
-    # the value counts method is like GroupBy but simpler. 
+    # the value counts method is like GroupBy but simpler.
     # It groupby's the columns giving the counts.
     #avail_titles = mydf['Name'].value_counts()
     #avail_platforms = mydf['Platform'].value_counts()
@@ -93,7 +97,9 @@ def suggest_games(
     #print(f'avail_genres = \n{avail_genres}')
     #print(f'avail_ratings = \n{avail_ratings}')
 
-    my_ratings = [ rating for rating in esrb_min_age if esrb_min_age[rating] <= my_age]
+    my_ratings = [ rating for rating in
+                ESRB_MIN_AGE if
+                ESRB_MIN_AGE[rating] <= my_age]
     # These are the ratings that the user can buy for their age.
     #print(f'my_ratings = {my_ratings}')
     #print(f'head of mydf_games = {mydf.head()}')
@@ -145,7 +151,11 @@ if __name__ == '__main__':
     fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
     mydf = make_games_clean(fname)
 
-    my_titles=['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']
+    my_titles = [
+        'Star Wars: Battlefront',
+        'Madden NFL 06',
+        'STORM: Frontline Nation',
+        'Men in Black II: Alien Escape']
     my_platforms = ['XB', 'PS']
     my_age = 16
     num_suggestions = 10
