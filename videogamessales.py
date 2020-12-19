@@ -1,7 +1,10 @@
+#Scott Mobarry
+#Salah Waji
+#Directory ID: smobarry
+#INST 326
+
 """
-Scott Mobarry
-Directory ID: smobarry
-INST 326
+In this module video game sales data is used to provide a suggestion for video games that a user might want to buy.
 
 We downloaded a pre-scraped csv file from
 https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
@@ -43,6 +46,8 @@ def make_games_clean(fname):
     input: file name of csv file
     output: Pandas dataframe with the cleaned video games data
     (Written by Scott Mobarry)
+    Driver: Scott Mobarry
+    Navigator: Salah Waji
     """
 
     mydf = pd.read_csv(fname)
@@ -85,6 +90,8 @@ def suggest_games(
     outputs:
     A list of game titles suggested to the user.
     (Written by Scott Mobarry)
+    Driver: Scott Mobarry
+    Navigator: Salah Waji
     """
     # the value counts method is like GroupBy but simpler.
     # It groupby's the columns giving the counts.
