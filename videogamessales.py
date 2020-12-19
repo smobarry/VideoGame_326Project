@@ -2,13 +2,20 @@
 # Directory ID: smobarry
 # INST 326
 
-# We downloaded a pre-scraped csv file from https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
-# Documentation for how to use pandas start at https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf 
-# For more documentation use this website https://pandas.pydata.org/docs/reference/frame.html
+# We downloaded a pre-scraped csv file from 
+# https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
+
+# Documentation for how to use pandas start at
+# https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
+
+# For more documentation use this website
+# https://pandas.pydata.org/docs/reference/frame.html
 
 import pandas as pd
 
-# To get the minimum age for each ESRB rating use this website https://en.wikipedia.org/wiki/Entertainment_Software_Rating_Board
+# To get the minimum age for each ESRB rating use this website
+# https://en.wikipedia.org/wiki/Entertainment_Software_Rating_Board
+
 esrb_min_age = {'E': 4, 'T': 13, 'M': 17, 'E10+': 10, 'EC': 2, 'K-A': 6, 'RP': 18, 'A0': 18}
 # This is a pandas dictionary of minimum ages for each rating in the dataset
 
@@ -35,25 +42,26 @@ def make_games_clean(fname):
     (Written by Scott Mobarry)
     """
 
-    df = pd.read_csv(fname)
-    #print(f'df.head() = {df.head(10)}')
-    #print(df.describe())
-    #print(df.info())
-    df = df[['Name', 'Platform', 'Genre', 'Rating']]
-    # We kept only the columns that we wanted. Indexing using a list means the list of four columns to keep from the 16 original columns.
-    #print(f'df.head() = {df.head(10)}')
-    rows_to_keep = df['Rating'].notna()
+    mydf = pd.read_csv(fname)
+    #print(f'mydf.head() = {mydf.head(10)}')
+    #print(mydf.describe())
+    #print(mydf.info())
+    mydf = mydf[['Name', 'Platform', 'Genre', 'Rating']]
+    # We kept only the columns that we wanted.
+    # Indexing using a list means the list of four columns to keep from the 16 original columns.
+    #print(f'mydf.head() = {mydf.head(10)}')
+    rows_to_keep = mydf['Rating'].notna()
     #print(f'rows_to_keep = {rows_to_keep}')
-    df = df[rows_to_keep]
-    #print(df.info())
+    mydf = mydf[rows_to_keep]
+    #print(mydf.info())
     # I just removed all rows with NaN as the rating. The remaining rows all have ratings.
-    #print(f'df.head() = {df.head(10)}')
-    #print(f'df.tail() = {df.tail(10)}')
-    return df
+    #print(f'mydf.head() = {mydf.head(10)}')
+    #print(f'mydf.tail() = {mydf.tail(10)}')
+    return mydf
 
 
 def suggest_games(
-    df,
+    mydf,
     my_titles,
     my_platforms,
     my_age,
@@ -64,7 +72,7 @@ def suggest_games(
     The inputs and outputs for this method are stated below:
     
     inputs:
-    The pandas dataframe of known games(df), 
+    The pandas dataframe of known games(mydf), 
     the list of strings containing titles that the user owns and has played and liked,
     the gaming console platform the user wants a game for,
     the age of the intended user,
@@ -74,11 +82,12 @@ def suggest_games(
     A list of game titles suggested to the user. 
     (Written by Scott Mobarry)
     """
-    # the value counts method is like GroupBy but simpler. It groupby's the columns giving the counts.
-    #avail_titles = df['Name'].value_counts()
-    #avail_platforms = df['Platform'].value_counts()
-    #avail_genres = df['Genre'].value_counts()
-    #avail_ratings = df['Rating'].value_counts()
+    # the value counts method is like GroupBy but simpler. 
+    # It groupby's the columns giving the counts.
+    #avail_titles = mydf['Name'].value_counts()
+    #avail_platforms = mydf['Platform'].value_counts()
+    #avail_genres = mydf['Genre'].value_counts()
+    #avail_ratings = mydf['Rating'].value_counts()
     #print(f'avail_titles = \n{avail_titles}')
     #print(f'avail_platforms = \n{avail_platforms}')
     #print(f'avail_genres = \n{avail_genres}')
@@ -87,30 +96,30 @@ def suggest_games(
     my_ratings = [ rating for rating in esrb_min_age if esrb_min_age[rating] <= my_age]
     # These are the ratings that the user can buy for their age.
     #print(f'my_ratings = {my_ratings}')
-    #print(f'head of df_games = {df.head()}')
-    #print(f'describe Ratings = {df['Rating'].describe()}')
-    #print(f'value_counts = {df['Rating'].value_counts()}')
+    #print(f'head of mydf_games = {mydf.head()}')
+    #print(f'describe Ratings = {mydf['Rating'].describe()}')
+    #print(f'value_counts = {mydf['Rating'].value_counts()}')
 
     ## More Like This
-    df_found_games = df[df['Name'].isin(my_titles)]
+    mydf_found_games = mydf[mydf['Name'].isin(my_titles)]
     # games found in the database from the titles that were given from the user.
-    #print(f'df_found_games = {df_found_games}')
-    #found_titles = df_found_games['Name'].value_counts()
-    #found_platforms = df_found_games['Platform'].value_counts()
-    found_genres = df_found_games['Genre'].value_counts()
+    #print(f'mydf_found_games = {mydf_found_games}')
+    #found_titles = mydf_found_games['Name'].value_counts()
+    #found_platforms = mydf_found_games['Platform'].value_counts()
+    found_genres = mydf_found_games['Genre'].value_counts()
     #found the genres in the dataset of games the user liked.
-    #found_ratings = df_found_games['Rating'].value_counts()
+    #found_ratings = mydf_found_games['Rating'].value_counts()
     #print(f'found_titles = {found_titles}')
     #print(f'found_platforms = {found_platforms}')
     #print(f'found_genres = {found_genres}')
     #print(f'found_ratings = {found_ratings}')
 
     ## FILTERING
-    df_can_suggest = df[
-        (~ df['Name'].isin(my_titles))
-        & df['Genre'].isin(found_genres.index.tolist())
-        & df['Platform'].isin(my_platforms)
-        & df['Rating'].isin(my_ratings)
+    df_can_suggest = mydf[
+        (~ mydf['Name'].isin(my_titles))
+        & mydf['Genre'].isin(found_genres.index.tolist())
+        & mydf['Platform'].isin(my_platforms)
+        & mydf['Rating'].isin(my_ratings)
         ]
     # The video game suggestor will filter rows by this criteria:
     # 1. Only keep genres of games the user likes
@@ -134,7 +143,7 @@ def suggest_games(
 if __name__ == '__main__':
     #this is an example useage via the command line
     fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
-    df = make_games_clean(fname)
+    mydf = make_games_clean(fname)
 
     my_titles=['Star Wars: Battlefront', 'Madden NFL 06', 'STORM: Frontline Nation', 'Men in Black II: Alien Escape']
     my_platforms = ['XB', 'PS']
@@ -142,7 +151,7 @@ if __name__ == '__main__':
     num_suggestions = 10
 
     suggestions = suggest_games(
-        df,
+        mydf,
         my_titles,
         my_platforms,
         my_age,
