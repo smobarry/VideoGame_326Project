@@ -19,7 +19,7 @@ def user_information():
     
     age = input("Hello How old are you? ")
     
-    preferred_genre= input("What genre of game do you like? ")
+    preferred_genre= input("What are 10 games you have played that you enjoyed? ")
     owned_games_list = []
     #ask for games owned for the particular genre, so that we don't recommend a game he/she already owns
     console =input("What console do you use? ")
