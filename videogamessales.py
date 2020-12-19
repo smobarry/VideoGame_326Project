@@ -147,24 +147,24 @@ def suggest_games(
 
 
 if __name__ == '__main__':
-    #this is an example useage via the command line
-    fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
-    mydf = make_games_clean(fname)
+    # This is an example useage via the command line.
 
-    my_titles = [
+    the_df = make_games_clean('Video_Games_Sales_as_at_22_Dec_2016.csv')
+
+    the_titles = [
         'Star Wars: Battlefront',
         'Madden NFL 06',
         'STORM: Frontline Nation',
         'Men in Black II: Alien Escape']
-    my_platforms = ['XB', 'PS']
-    my_age = 16
-    num_suggestions = 10
+    the_platforms = ['XB', 'PS']
+    the_age = 16
+    the_num_suggestions = 10
 
-    suggestions = suggest_games(
-        mydf,
-        my_titles,
-        my_platforms,
-        my_age,
-        num_suggestions,
+    the_suggestions = suggest_games(
+        the_df,
+        the_titles,
+        the_platforms,
+        the_age,
+        the_num_suggestions,
         )
-    print(f'{len(suggestions)} suggestions = {suggestions}')
+    print(f'{len(the_suggestions)} suggestions = {the_suggestions}')
