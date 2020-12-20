@@ -4,7 +4,7 @@
 #INST 326
 
 """
-In this module video game sales data is used to provide a suggestion for video games that a user might want to buy.
+In this module the video game sales data is used to provide a suggestion for video games that a user might want to buy.
 
 We downloaded a pre-scraped csv file from
 https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
