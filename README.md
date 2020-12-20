@@ -23,7 +23,7 @@ The csv file ('Video_Games_Sales_as_at_22_Dec_2016.csv') was loaded into a Panda
 
 The titles of the games are used to find genres that are available in the database that the user would like. So we want to suggest games in these genres. Note we did not ask the user about genres because each database has a different set of genre names.
 
-## Filter
+## Filtering
 
 Also we cannot suggest games that the user cannot use. Two of the DataFrame columns were used to restrict the data. In particular we asked the user for their prefered platform, and their age. The age was used to compute which ESRB ratings were allowed to be suggested to the user. Our algorithm takes the Pandas DataFrame and filters down to those games that meet these requirements. 
 
@@ -34,7 +34,7 @@ The video game suggestor will filter rows by this criteria:
      3. Only keep the ratings the user can buy due to their age restrictions
      4. Don't keep the titles the user gave they already like
 
-## Sample
+## Sampling
 
 At this point we have a subset of games in the dataset that could be suggested. Currently the program random samples a specified number of titles. 
 

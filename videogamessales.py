@@ -68,6 +68,60 @@ def make_games_clean(fname):
     return mydf
 
 
+def videogames_more_like_this(mydf, my_titles):
+    ## More Like This
+    mydf_found_games = mydf[mydf['Name'].isin(my_titles)]
+    # games found in the database from the titles that were given from the user.
+    #print(f'mydf_found_games = {mydf_found_games}')
+    #found_titles = mydf_found_games['Name'].value_counts()
+    #found_platforms = mydf_found_games['Platform'].value_counts()
+    found_genres = mydf_found_games['Genre'].value_counts()
+    #found the genres in the dataset of games the user liked.
+    #found_ratings = mydf_found_games['Rating'].value_counts()
+    #print(f'found_titles = {found_titles}')
+    #print(f'found_platforms = {found_platforms}')
+    #print(f'found_genres = {found_genres}')
+    #print(f'found_ratings = {found_ratings}')
+    return found_genres
+
+
+def videogames_filtering(mydf, my_age, my_titles, my_platforms, found_genres):
+    ## FILTERING
+    my_ratings = [ rating for rating in
+                ESRB_MIN_AGE if
+                ESRB_MIN_AGE[rating] <= my_age]
+    # These are the ratings that the user can buy for their age.
+    #print(f'my_ratings = {my_ratings}')
+    #print(f'head of mydf_games = {mydf.head()}')
+    #print(f'describe Ratings = {mydf['Rating'].describe()}')
+    #print(f'value_counts = {mydf['Rating'].value_counts()}')
+    df_can_suggest = mydf[
+        (~ mydf['Name'].isin(my_titles))
+        & mydf['Genre'].isin(found_genres.index.tolist())
+        & mydf['Platform'].isin(my_platforms)
+        & mydf['Rating'].isin(my_ratings)
+        ]
+    # The video game suggestor will filter rows by this criteria:
+    # 1. Only keep genres of games the user likes
+    # 2. Only keep platforms the user wants
+    # 3. Only keep the ratings the user can buy due to their age restrictions
+    # 4. Don't keep the titles the user gave they already like
+    return df_can_suggest
+
+
+def videogames_sampling(df_can_suggest, num_suggestions):
+    ## Sampling
+    # of the games that survived the filtering we now choose a few to suggest
+    # print(f'df_can_suggest.count() = {df_can_suggest.count()}')
+    print(f'df_can_suggest = \n{df_can_suggest}')
+    #df_suggestions = df_can_suggest.head(num_suggestions)
+    df_suggestions = df_can_suggest.sample(n = num_suggestions)
+    # The next statement extracts a python list of suggested titles
+    suggestions = df_suggestions['Name'].tolist()
+    #converts the suggestions into a python list of titles for the GUI
+    return suggestions
+
+
 def suggest_games(
     mydf,
     my_titles,
@@ -104,52 +158,12 @@ def suggest_games(
     #print(f'avail_genres = \n{avail_genres}')
     #print(f'avail_ratings = \n{avail_ratings}')
 
-    my_ratings = [ rating for rating in
-                ESRB_MIN_AGE if
-                ESRB_MIN_AGE[rating] <= my_age]
-    # These are the ratings that the user can buy for their age.
-    #print(f'my_ratings = {my_ratings}')
-    #print(f'head of mydf_games = {mydf.head()}')
-    #print(f'describe Ratings = {mydf['Rating'].describe()}')
-    #print(f'value_counts = {mydf['Rating'].value_counts()}')
+    found_genres = videogames_more_like_this(mydf, my_titles)
+    
+    df_can_suggest = videogames_filtering(mydf, my_age, my_titles, my_platforms, found_genres)
 
-    ## More Like This
-    mydf_found_games = mydf[mydf['Name'].isin(my_titles)]
-    # games found in the database from the titles that were given from the user.
-    #print(f'mydf_found_games = {mydf_found_games}')
-    #found_titles = mydf_found_games['Name'].value_counts()
-    #found_platforms = mydf_found_games['Platform'].value_counts()
-    found_genres = mydf_found_games['Genre'].value_counts()
-    #found the genres in the dataset of games the user liked.
-    #found_ratings = mydf_found_games['Rating'].value_counts()
-    #print(f'found_titles = {found_titles}')
-    #print(f'found_platforms = {found_platforms}')
-    #print(f'found_genres = {found_genres}')
-    #print(f'found_ratings = {found_ratings}')
+    suggestions = videogames_sampling(df_can_suggest, num_suggestions)
 
-    ## FILTERING
-    df_can_suggest = mydf[
-        (~ mydf['Name'].isin(my_titles))
-        & mydf['Genre'].isin(found_genres.index.tolist())
-        & mydf['Platform'].isin(my_platforms)
-        & mydf['Rating'].isin(my_ratings)
-        ]
-    # The video game suggestor will filter rows by this criteria:
-    # 1. Only keep genres of games the user likes
-    # 2. Only keep platforms the user wants
-    # 3. Only keep the ratings the user can buy due to their age restrictions
-    # 4. Don't keep the titles the user gave they already like
-
-
-    ## Sampling
-    # of the games that survived the filtering we now choose a few to suggest
-    # print(f'df_can_suggest.count() = {df_can_suggest.count()}')
-    print(f'df_can_suggest = \n{df_can_suggest}')
-    #df_suggestions = df_can_suggest.head(num_suggestions)
-    df_suggestions = df_can_suggest.sample(n = num_suggestions)
-    # The next statement extracts a python list of suggested titles
-    suggestions = df_suggestions['Name'].tolist()
-    #converts the suggestions into a python list of titles for the GUI
     return suggestions
 
 
