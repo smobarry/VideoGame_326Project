@@ -4,15 +4,16 @@
 #INST 326
 
 """
-In this module the video game sales data is used to provide a suggestion for video games that a user might want to buy.
+In this module the video game sales data is used to provide a suggestion for
+video games that a user might want to buy.
 
-We downloaded a pre-scraped csv file from
+We downloaded a pre-scraped csv file from:
 https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings
 
-Documentation for how to use pandas start at
+Documentation for how to use pandas start at:
 https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
 
-For more documentation use this website
+For more documentation use this website:
 https://pandas.pydata.org/docs/reference/frame.html
 """
 
@@ -37,19 +38,21 @@ AO         1
 
 def make_games_clean(fname):
     """
-    The method make_games_clean(fname) creates a dataframe from the cleaned video games data file.
+    The method make_games_clean() creates a dataframe from the cleaned video games data file.
     This throws away data we can't use.
     We downloaded the video games sales csv file from Kaggle
     and checked it into GitHub in the same directory as this script.
     The input csv file needs at least these 4 columns: ['Name', 'Platform', 'Genre', 'Rating']
-    The inputs and outputs are stated below:
-    input: file name of csv file
-    output: Pandas dataframe with the cleaned video games data
+
+    Args:
+        fname (str): File name of csv file.
+    Returns:
+        mydf (pandas.DataFrame): the cleaned video games data.
+
     (Written by Scott Mobarry)
     Driver: Scott Mobarry
     Navigator: Salah Waji
     """
-
     mydf = pd.read_csv(fname)
     #print(f'mydf.head() = {mydf.head(10)}')
     #print(mydf.describe())
@@ -69,7 +72,21 @@ def make_games_clean(fname):
 
 
 def videogames_more_like_this(mydf, my_titles):
-    ## More Like This
+    """
+    The videogames_more_like_this() method returns the genres the user likes.
+
+    Args:
+        mydf (pandas.DataFrame): the cleaned video games data.
+        my_titles (list of str): the titles that the user has played and liked
+            but not to be suggested.
+
+    Returns:
+        found_genres (pandas.Series): the found genres in games that the user likes.
+
+    (Written by Scott Mobarry)
+    Driver: Scott Mobarry
+    Navigator: Salah Waji
+    """
     mydf_found_games = mydf[mydf['Name'].isin(my_titles)]
     # games found in the database from the titles that were given from the user.
     #print(f'mydf_found_games = {mydf_found_games}')
@@ -85,8 +102,31 @@ def videogames_more_like_this(mydf, my_titles):
     return found_genres
 
 
-def videogames_filtering(mydf, my_age, my_titles, my_platforms, found_genres):
-    ## FILTERING
+def videogames_filtering(mydf, found_genres, my_platforms, my_age, my_titles):
+    """
+    This method filters the video game data frame rows by this criteria:
+    1. Only keep genres of games the user likes.
+    2. Only keep platforms the user wants.
+    3. Only keep the ratings the user can buy due to their age restrictions.
+    4. Don't keep the titles the user gave they already like.
+
+    Args:
+        mydf (pandas.DataFrame): the cleaned video games data.
+        found_genres (pandas.Series): the found genres in games that the user likes.
+        my_platforms (list of str): the list of interesting platforms available
+            in the dataset.
+        my_age (int): the age of the user in years.
+        my_titles (list of str): the list of video game titles not to be
+            considered in the suggester.
+
+    Returns:
+        df_can_suggest (pandas.DataFrame): the subset of videogames that can be
+            suggested to the user.
+
+    (Written by Scott Mobarry)
+    Driver: Scott Mobarry
+    Navigator: Salah Waji
+    """
     my_ratings = [ rating for rating in
                 ESRB_MIN_AGE if
                 ESRB_MIN_AGE[rating] <= my_age]
@@ -101,24 +141,33 @@ def videogames_filtering(mydf, my_age, my_titles, my_platforms, found_genres):
         & mydf['Platform'].isin(my_platforms)
         & mydf['Rating'].isin(my_ratings)
         ]
-    # The video game suggestor will filter rows by this criteria:
-    # 1. Only keep genres of games the user likes
-    # 2. Only keep platforms the user wants
-    # 3. Only keep the ratings the user can buy due to their age restrictions
-    # 4. Don't keep the titles the user gave they already like
     return df_can_suggest
 
 
 def videogames_sampling(df_can_suggest, num_suggestions):
-    ## Sampling
-    # of the games that survived the filtering we now choose a few to suggest
+    """
+    This method samples the games that survived the filtering.
+    We now choose a few video game titles to suggest.
+
+    Args:
+        df_can_suggest (pandas.DataFrame): the subset of videogames that can be
+            suggested to the user.
+        num_suggestions (int): the number of suggestions displayed to the user.
+
+    Returns:
+        list of str: the suggestions of titles for the GUI.
+
+    (Written by Scott Mobarry)
+    Driver: Scott Mobarry
+    Navigator: Salah Waji
+    """
+
     # print(f'df_can_suggest.count() = {df_can_suggest.count()}')
     print(f'df_can_suggest = \n{df_can_suggest}')
     #df_suggestions = df_can_suggest.head(num_suggestions)
     df_suggestions = df_can_suggest.sample(n = num_suggestions)
     # The next statement extracts a python list of suggested titles
     suggestions = df_suggestions['Name'].tolist()
-    #converts the suggestions into a python list of titles for the GUI
     return suggestions
 
 
@@ -132,17 +181,19 @@ def suggest_games(
     """
     The method suggest_games() implements a video game suggestor that returns reccomendations
     to the user based off of the established criteria.
-    The inputs and outputs for this method are stated below:
 
-    inputs:
-    The pandas dataframe of known games(mydf),
-    the list of strings containing titles that the user owns and has played and liked,
-    the gaming console platform the user wants a game for,
-    the age of the intended user,
-    the amount of video game suggestions the user would like.
+    Args:
+        mydf (pandas.DataFrame): the cleaned video games data.
+        my_titles (list of str): the titles of video games that the user has
+            played and liked but not to be suggested.
+        my_platforms (list of str): the list of interesting platforms available
+            in the dataset.
+        my_age (int): the age of the user in years.
+        num_suggestions (int): the number of suggestions displayed to the user.
 
-    outputs:
-    A list of game titles suggested to the user.
+    Returns:
+        list of str: the game titles that are suggested to the user.
+
     (Written by Scott Mobarry)
     Driver: Scott Mobarry
     Navigator: Salah Waji
@@ -159,8 +210,8 @@ def suggest_games(
     #print(f'avail_ratings = \n{avail_ratings}')
 
     found_genres = videogames_more_like_this(mydf, my_titles)
-    
-    df_can_suggest = videogames_filtering(mydf, my_age, my_titles, my_platforms, found_genres)
+
+    df_can_suggest = videogames_filtering(mydf, found_genres, my_platforms, my_age, my_titles)
 
     suggestions = videogames_sampling(df_can_suggest, num_suggestions)
 
