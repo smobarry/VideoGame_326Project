@@ -9,7 +9,7 @@ Code for INST 326 Final Project
 
 # Prerequisites
 
-Download https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings and install pandas, tkinter.
+Download https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings into a csv file and install pandas, tkinter.
 
 # Suggester
 
