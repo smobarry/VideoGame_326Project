@@ -21,7 +21,7 @@ class game_Generator:
         self.v = tk.IntVar()
         #self.consoles =[""]#this needs to be populated first
         #self.titles = [""]#this needs to be populated first
-        self.consoles =['XB', 'PS']#for testing purposes
+        self.consoles =['']#for testing purposes
         self.titles=  ['']#for testing purposes
         self.fname = 'Video_Games_Sales_as_at_22_Dec_2016.csv'
         self.df = videogamessales.make_games_clean(self.fname)
@@ -221,11 +221,11 @@ class game_Generator:
         btn_gen = tk.Button(self.root, text = "Preview Added Titles", command = self.show_titles_lbl).grid(row=3, column=3, padx=5, pady=5)
             
     def btn_add_consoles(self):
-         """creates the preview button which calls on the add_consoles() method
+        """creates the preview button which calls on the add_consoles() method
         """
         btn_gen = tk.Button(self.root, text = "Add Console", command = self.add_consoles).grid(row=1, column=2, padx=5, pady=5)
         
-    def btn_show_titles(self):
+    def btn_show_consoles(self):
         """creates the preview button which calls on the show_consoles_lbl() method
         """
         self.record_entries()
@@ -286,7 +286,7 @@ def main():
     #methods for labels
     gen.show_titles_lbl()
     gen.gen_lbl()
-    
+    gen.show_consoles_lbl()
     
     #gen.record_entries()
     
@@ -295,6 +295,7 @@ def main():
     gen.btn_add_titles()
     gen.btn_show_titles()
     gen.btn_generate()
+    gen.btn_show_consoles()
     #gen.switch_settings()
     
     
