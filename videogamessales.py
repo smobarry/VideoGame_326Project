@@ -81,7 +81,7 @@ def videogames_more_like_this(mydf, my_titles):
             but not to be suggested.
 
     Returns:
-        found_genres (pandas.Series): the found genres in games that the user likes.
+        found_genres (list of str): the found genres in games that the user likes.
 
     (Written by Scott Mobarry)
     Driver: Scott Mobarry
@@ -92,7 +92,7 @@ def videogames_more_like_this(mydf, my_titles):
     #print(f'mydf_found_games = {mydf_found_games}')
     #found_titles = mydf_found_games['Name'].value_counts()
     #found_platforms = mydf_found_games['Platform'].value_counts()
-    found_genres = mydf_found_games['Genre'].value_counts()
+    found_genres = mydf_found_games['Genre'].value_counts().index.tolist()
     #found the genres in the dataset of games the user liked.
     #found_ratings = mydf_found_games['Rating'].value_counts()
     #print(f'found_titles = {found_titles}')
@@ -112,7 +112,7 @@ def videogames_filtering(mydf, found_genres, my_platforms, my_age, my_titles):
 
     Args:
         mydf (pandas.DataFrame): the cleaned video games data.
-        found_genres (pandas.Series): the found genres in games that the user likes.
+        found_genres (list of str): the found genres in games that the user likes.
         my_platforms (list of str): the list of interesting platforms available
             in the dataset.
         my_age (int): the age of the user in years.
@@ -137,7 +137,7 @@ def videogames_filtering(mydf, found_genres, my_platforms, my_age, my_titles):
     #print(f'value_counts = {mydf['Rating'].value_counts()}')
     df_can_suggest = mydf[
         (~ mydf['Name'].isin(my_titles))
-        & mydf['Genre'].isin(found_genres.index.tolist())
+        & mydf['Genre'].isin(found_genres)
         & mydf['Platform'].isin(my_platforms)
         & mydf['Rating'].isin(my_ratings)
         ]

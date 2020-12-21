@@ -11,10 +11,10 @@ from videogamessales import make_games_clean, videogames_more_like_this, videoga
 def startup():
 
     my_df = pandas.DataFrame({
-        "Name": ["Game A", "Game B", "Game C", "Game D"],
-        "Platform": ["DS", "Wii", "XB", "PS"],
-        "Genre": ["Racing", "Sports", "Shooter", "Action"],
-        "Rating": ["E", "E", "M", "T"],
+        "Name": ["Game A", "Game B", "Game C", "Game D", "Game E", "Game F"],
+        "Platform": ["XB", "Wii", "XB", "PS", "XB", "PS"],
+        "Genre": ["Racing", "Sports", "Shooter", "Action", "Action", "Racing"],
+        "Rating": ["E", "E", "M", "T", "T", "E"],
     })        
 
     my_titles = [
@@ -37,27 +37,33 @@ def startup():
         print(f'{len(the_suggestions)} suggestions = {the_suggestions}')
     return (my_df, my_titles, my_platforms, my_age, num_suggestions)
 
+
 def test_videogames_more_like_this():
     (my_df, my_titles, my_platforms, my_age, num_suggestions) = startup()
     print('----- test_videogames_more_like_this +++++')
     print(f'my_df = {my_df}')
     found_genres: pandas.Series = videogames_more_like_this(my_df, my_titles)
     print(f'found_genres ={found_genres}')
-    assert set(found_genres.to_list()) == set(["Racing", "Action"])
+    assert set(found_genres) == set(["Racing", "Action"])
 
 
 def test_videogames_filtering():
     (my_df, my_titles, my_platforms, my_age, num_suggestions) = startup()
-    found_genres = pandas.Series()
+    found_genres = pandas.Series(["Racing", "Action"])
     df_can_suggest = videogames_filtering(my_df, found_genres, my_platforms, my_age, my_titles)
-    assert df_can_suggest == df_can_suggest
-    assert my_df == my_df
-    
+    assert set(df_can_suggest['Name'].to_list()) == set(['Game E', 'Game F'])
+
+
 def test_videogames_sampling():
-    (my_df, my_titles, my_platforms, my_age, num_suggestions) = startup()
-    df_can_suggest = my_df
+    df_can_suggest = pandas.DataFrame({
+        "Name": ["Game A", "Game B", "Game C", "Game D", "Game E", "Game F"],
+        "Platform": ["XB", "Wii", "XB", "PS", "XB", "PS"],
+        "Genre": ["Racing", "Sports", "Shooter", "Action", "Action", "Racing"],
+        "Rating": ["E", "E", "M", "T", "T", "E"],
+    })
+    num_suggestions = 2
     suggestions = videogames_sampling(df_can_suggest, num_suggestions, random_state=1)
-    assert suggestions == ['Game D', 'Game C']
+    assert set(suggestions) == set(['Game B', 'Game C'])
 
 def test_suggest_games():
     (my_df, my_titles, my_platforms, my_age, num_suggestions) = startup()
@@ -68,4 +74,4 @@ def test_suggest_games():
         my_age,
         num_suggestions,
         )
-    assert sugestions ==  ['Game A', 'Game B']
+    assert set(sugestions) ==  set(['Game E', 'Game F'])
