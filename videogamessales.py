@@ -144,7 +144,7 @@ def videogames_filtering(mydf, found_genres, my_platforms, my_age, my_titles):
     return df_can_suggest
 
 
-def videogames_sampling(df_can_suggest, num_suggestions):
+def videogames_sampling(df_can_suggest, num_suggestions, random_state=None):
     """
     This method samples the games that survived the filtering.
     We now choose a few video game titles to suggest.
@@ -153,7 +153,7 @@ def videogames_sampling(df_can_suggest, num_suggestions):
         df_can_suggest (pandas.DataFrame): the subset of videogames that can be
             suggested to the user.
         num_suggestions (int): the number of suggestions displayed to the user.
-
+        random_state (int): Leave set to None except for unit test.
     Returns:
         list of str: the suggestions of titles for the GUI.
 
@@ -165,7 +165,7 @@ def videogames_sampling(df_can_suggest, num_suggestions):
     # print(f'df_can_suggest.count() = {df_can_suggest.count()}')
     print(f'df_can_suggest = \n{df_can_suggest}')
     #df_suggestions = df_can_suggest.head(num_suggestions)
-    df_suggestions = df_can_suggest.sample(n = num_suggestions)
+    df_suggestions = df_can_suggest.sample(n = num_suggestions, random_state=random_state)
     # The next statement extracts a python list of suggested titles
     suggestions = df_suggestions['Name'].tolist()
     return suggestions
