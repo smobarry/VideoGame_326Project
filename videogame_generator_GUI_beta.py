@@ -12,6 +12,8 @@ import videogamessales
 class game_Generator:
     
     def __init__(self):
+        """The super contructor class containing the window frame for the GUI
+        """
         self.root = tk.Tk()#refers to the window
         self.root.title("Videogame Suggestion Generator")
         self.root.geometry("1000x400")
